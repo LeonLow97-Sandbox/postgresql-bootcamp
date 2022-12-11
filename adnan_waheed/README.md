@@ -14,3 +14,23 @@
 - `CREATE DATABASE database_name`
 - `DROP DATABASE IF EXISTS database_name`
 
+## `CREATE TABLE`
+
+- `SERIAL` is like auto_increment
+- Foreign key is used to link different table together.
+
+```sql
+CREATE TABLE movies (
+	movie_id SERIAL PRIMARY KEY, -- SERIAL is like auto_increment
+	movie_name VARCHAR(100) NOT NULL,
+	movie_length INT,
+	movie_lang VARCHAR(20),
+	age_certificate VARCHAR(10),
+	release_date DATE,
+	director_id INT REFERENCES directors (director_id) -- Foreign key (REFERENCES table_name (foreign_table_column))
+);
+```
+
+## `DROP TABLE`
+
+- `DROP TABLE table_name`
