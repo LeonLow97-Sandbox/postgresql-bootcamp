@@ -34,3 +34,40 @@ CREATE TABLE movies (
 ## `DROP TABLE`
 
 - `DROP TABLE table_name`
+
+# INSERT Query
+
+## INSERT data into a table
+
+```sql
+INSERT INTO table_name (column1, column2)
+VALUES ('value1', 'value2');
+
+-- Insert multiple records
+INSERT INTO table_name (column1, column2)
+VALUES
+('value1','value2'),
+('value1','value2'),
+('value1','value2');
+```
+
+## INSERT data with single quotes
+
+```sql
+INSERT INTO customers (first_name)
+VALUES
+('Bill''O Sullivan');
+```
+
+## INSERT data with returning rows
+
+```sql
+-- Returns the affected row that was inserted to the table
+INSERT INTO customers (first_name)
+VALUES ('LEONARD') RETURNING *;
+
+-- Returns a single column value
+INSERT INTO customers (first_name)
+VALUES ('JOSEPH') RETURNING customer_id;
+```
+
