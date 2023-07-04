@@ -28,3 +28,17 @@
     - A student has many classes, and vice versa.
     - A player has many basketball matches, and vice versa.
 
+## Primary Keys and Foreign Keys
+
+- Primary Key: Unique identifies this record in the table
+- Foreign Key: 
+    - Identifies a record (usually in another table) that this row is associated with.
+    - The 'many' side of the relationship gets the foreign key column.
+
+|Primary Keys|Foreign Keys|
+|:-:|:-:|
+|Each row in every table has 1 primary key|Rows only have this if they belong to another record|
+|No other row in the same table can have the same value|Many rows in the same table can have the same foreign key|
+|99% of the time called `id`|Name varies, usually called something like `xyz_id`|
+|Either an integer or a UUID|Exactly equal to the primary key of the referenced row|
+|Will never change|Will change if the relationship changes|
