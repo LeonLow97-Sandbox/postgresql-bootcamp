@@ -53,3 +53,51 @@ CREATE TABLE users (
   username VARCHAR(50)
 );
 ```
+
+## Foreign Key
+
+- Cannot insert foreign key data that does not exist, _violates foreign key constraint_.
+- Can insert a foreign key data of _NULL_.
+
+```sql
+CREATE TABLE photos (
+  	id SERIAL PRIMARY KEY,
+  	url VARCHAR(200),
+ 	user_id INTEGER REFERENCES users(id)
+);
+```
+
+```sql
+-- Find all the photos created by user_id = 4
+SELECT * FROM photos WHERE user_id = 4;
+
+-- List all photos with details about the associated user for each
+SELECT url, username FROM photos
+JOIN users ON users.id = photos.user_id;
+```
+
+## Constraints around deletion of foreign key data
+
+- What happens if you try to delete a user when a photo is still referencing it?
+
+|    On Delete Option     | Description                                                            |
+| :---------------------: | ---------------------------------------------------------------------- |
+|  `ON DELETE RESTRICT`   | Throw an error                                                         |
+|  `ON DELETE NO ACTION`  | Throw an error                                                         |
+|   `ON DELETE CASCADE`   | Delete the photo too                                                   |
+|  `ON DELETE SET NULL`   | Set the 'user_id' of the photo to `NULL`                               |
+| `ON DELETE SET DEFAULT` | Set the 'user_id' of the photo to a default value, if one is provided. |
+
+```sql
+CREATE TABLE photos (
+    id SERIAL PRIMARY KEY,
+    url VARCHAR(200),
+    user_id INTEGER REFERENCES users(id) ON DELETE CASCADE
+);
+
+CREATE TABLE photos (
+    id SERIAL PRIMARY KEY,
+    url VARCHAR(200),
+    user_id INTEGER REFERENCES users(id) ON DELETE SET NULL
+);
+```
