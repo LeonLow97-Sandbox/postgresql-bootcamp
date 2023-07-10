@@ -24,13 +24,13 @@ GROUP BY user_id;
 
 ## Aggregate Functions
 
-| Aggregate Functions | Description                                            |
-| :-----------------: | ------------------------------------------------------ |
-|      `COUNT()`      | Returns the number of values in a group of values.     |
-|       `SUM()`       | Finds the **sum** of a group of numbers.               |
-|       `AVG()`       | Finds the **average** of a group of numbers.           |
-|       `MIN()`       | Returns the **minimum** value from a group of numbers. |
-|       `MAX()`       | Returns the **maximum** value from a group of numbers. |
+| Aggregate Functions | Description                                                               |
+| :-----------------: | ------------------------------------------------------------------------- |
+|      `COUNT()`      | Returns the number of values in a group of values, excludes `NULL` values |
+|       `SUM()`       | Finds the **sum** of a group of numbers.                                  |
+|       `AVG()`       | Finds the **average** of a group of numbers.                              |
+|       `MIN()`       | Returns the **minimum** value from a group of numbers.                    |
+|       `MAX()`       | Returns the **maximum** value from a group of numbers.                    |
 
 ```sql
 SELECT COUNT(id) FROM comments;
@@ -44,9 +44,24 @@ SELECT MAX(id), contents FROM comments; -- this results in an aggregate function
 
 ## Combining `GROUP BY` and Aggregates
 
+<img src="./pics/group-by2.png" />
+
 ```sql
 -- Counts the number of comments the user has made
 SELECT user_id, COUNT(id) AS no_of_comments
 FROM comments
 GROUP BY user_id;
+```
+
+```sql
+-- will count NULL values too instead of referencing a single column
+SELECT COUNT(*) FROM photos;
+```
+
+```sql
+-- Find the number of comments for each photo
+-- `comments` table: id, contents, user_id, photo_id
+SELECT photo_id, COUNT(*)
+FROM comments
+GROUP BY photo_id;
 ```
