@@ -54,7 +54,7 @@ GROUP BY user_id;
 ```
 
 ```sql
--- will count NULL values too instead of referencing a single column
+-- will count NULL values too instead of referencing a single column COUNT(user_id)
 SELECT COUNT(*) FROM photos;
 ```
 
@@ -64,4 +64,13 @@ SELECT COUNT(*) FROM photos;
 SELECT photo_id, COUNT(*)
 FROM comments
 GROUP BY photo_id;
+```
+
+## GROUP BY with JOIN
+
+```sql
+SELECT name, COUNT(*)
+FROM books
+JOIN authors ON authors.id = books.author_id
+GROUP BY authors.name;
 ```
