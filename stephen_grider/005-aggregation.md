@@ -26,7 +26,8 @@ GROUP BY user_id;
 
 | Aggregate Functions | Description                                                               |
 | :-----------------: | ------------------------------------------------------------------------- |
-|      `COUNT()`      | Returns the number of values in a group of values, excludes `NULL` values |
+|      `COUNT()`      | Returns the number of values in a group of values, EXCLUDES `NULL` values |
+|      `COUNT(*)`      | INCLUDES `NULL` values |
 |       `SUM()`       | Finds the **sum** of a group of numbers.                                  |
 |       `AVG()`       | Finds the **average** of a group of numbers.                              |
 |       `MIN()`       | Returns the **minimum** value from a group of numbers.                    |
@@ -80,8 +81,8 @@ GROUP BY authors.name;
 - `HAVING`: Filters the set of groups.
 
 ```sql
--- Find the number of comments for each photo 
--- where the photo_id is less than 3 and 
+-- Find the number of comments for each photo
+-- where the photo_id is less than 3 and
 -- the photo has more than 2 comments.
 SELECT photo_id, COUNT(*)
 FROM comments
@@ -100,3 +101,11 @@ WHERE photo_id < 50
 GROUP BY user_id
 HAVING COUNT(*) > 20;
 ```
+
+```sql
+SELECT manufacturer, SUM(price*units_sold)
+FROM phones
+GROUP BY manufacturer
+HAVING SUM(price*units_sold) > 2000000;
+```
+

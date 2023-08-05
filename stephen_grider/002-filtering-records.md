@@ -9,18 +9,18 @@ WHERE area > 4000;
 
 ## Comparison Math Operators
 
-| Comparison Operators | Description                           |
-| :------------------: | ------------------------------------- |
-|         `=`          | Equal to                              |
-|         `>`          | Greater than                          |
-|         `<`          | Less than                             |
-|         `>=`         | Greater than or equal to              |
-|         `<=`         | Less than or equal to                 |
-|         `<>`         | Not equal                             |
-|         `!=`         | Not equal                             |
-|         `IN`         | Is the value present in a list?       |
-|       `NOT IN`       | Is the value _not_ present in a list? |
-|      `BETWEEN`       | Is the value between 2 other values?  |
+| Comparison Operators | Description                                        |
+| :------------------: | -------------------------------------------------- |
+|         `=`          | Equal to                                           |
+|         `>`          | Greater than                                       |
+|         `<`          | Less than                                          |
+|         `>=`         | Greater than or equal to                           |
+|         `<=`         | Less than or equal to                              |
+|         `<>`         | Not equal                                          |
+|         `!=`         | Not equal                                          |
+|         `IN`         | Is the value present in a list?                    |
+|       `NOT IN`       | Is the value _not_ present in a list?              |
+|      `BETWEEN`       | Is the value between 2 other values? **Inclusive** |
 
 ```sql
 SELECT name, area FROM cities WHERE area <> 4000;

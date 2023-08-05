@@ -30,7 +30,7 @@
 
 ## Primary Keys and Foreign Keys
 
-- Primary Key: Unique identifies this record in the table
+- Primary Key: Uniquely identifies this record in the table
 - Foreign Key:
   - Identifies a record (usually in another table) that this row is associated with.
   - The 'many' side of the relationship gets the foreign key column.
@@ -63,7 +63,7 @@ CREATE TABLE users (
 CREATE TABLE photos (
   	id SERIAL PRIMARY KEY,
   	url VARCHAR(200),
- 	user_id INTEGER REFERENCES users(id)
+ 	user_id INTEGER REFERENCES users(id) -- FOREIGN KEY
 );
 ```
 
