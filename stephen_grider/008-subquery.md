@@ -60,3 +60,56 @@ FROM (
 ) AS p;
 ```
 
+```sql
+-- Assignment
+-- Calculate the average price of phones for each manufacturer.  Then print the highest average price. Rename this value to max_average_price
+-- Column in `phones` table: name, manufacturer, price, units_sold
+SELECT MAX(avg_price) AS max_average_price
+FROM (
+    SELECT AVG(price) as avg_price
+    FROM phones
+    GROUP BY manufacturer
+);
+```
+
+## SubQueries in `JOIN` clause
+
+<img src="./pics/subquery_join.png" alt="subquery with JOIN clause" />
+
+- Any SubQuery that returns data compatible with the `ON` clause.
+
+```sql
+-- Not the best example but this is just to understand how it works
+SELECT first_name
+FROM users
+JOIN (
+ 	SELECT user_id FROM orders WHERE product_id = 3 
+) AS o
+ON o.user_id = users.id;
+```
+
+## SubQueries in `WHERE` clause
+
+- These SubQueries are embedded within the main query to filter and retrieve data based on specific conditions or criteria.
+
+```sql
+-- Show the id of orders that involve a product with
+-- a price/weight ratio greater than 50
+SELECT id
+FROM orders
+WHERE product_id IN (
+    SELECT id FROM products
+    WHERE price/weight > 50
+);
+```
+
+```sql
+-- Show the name of all products with a price greater
+-- then the average product price
+SELECT name
+FROM products
+WHERE price > (
+    SELECT AVG(price)
+    FROM products
+);
+```
