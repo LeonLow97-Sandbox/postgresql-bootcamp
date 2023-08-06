@@ -19,7 +19,7 @@ WHERE price > (
 <img src="./pics/subquery.png" alt="diagram of subquery" />
 <img src="./pics/shape_of_subquery.png" alt="shape of subquery" />
 
-## SubQueries in a SELECT
+## SubQueries in a `SELECT`
 
 - Can put the SubQuery in a SELECT because it returns a _single_ value.
 
@@ -36,3 +36,27 @@ SELECT name, price,
 (price / (SELECT MAX(price) FROM phones)) AS price_ratio
 FROM phones;
 ```
+
+## SubQueries in a `FROM`
+
+- Any SubQuery so long as the outer SELECT/WHERE/etc are compatible
+- The SubQuery must have an alias applied to it.
+
+```sql
+-- Meaningless Example (for learning)
+SELECT name, price_weight_ratio
+FROM (
+    SELECT name, price / weight AS price_weight_ratio
+    FROM products
+) AS p -- must include this alias 'p' for the FROM SubQuery
+WHERE price_weight_ratio > 5
+
+-- Meaningful example (Find the average number of orders for all users)
+SELECT AVG(order_count)
+FROM (
+    SELECT user_id, COUNT(*) AS order_count
+	FROM orders
+	GROUP BY user_id
+) AS p;
+```
+
