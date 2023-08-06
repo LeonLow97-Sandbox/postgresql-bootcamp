@@ -83,7 +83,7 @@ FROM (
 SELECT first_name
 FROM users
 JOIN (
- 	SELECT user_id FROM orders WHERE product_id = 3 
+ 	SELECT user_id FROM orders WHERE product_id = 3
 ) AS o
 ON o.user_id = users.id;
 ```
@@ -139,14 +139,14 @@ WHERE department NOT IN (
 SELECT name, department, price
 FROM products
 WHERE price > ALL (
- 	SELECT price FROM products WHERE department = 'Industrial' 
+ 	SELECT price FROM products WHERE department = 'Industrial'
 );
 
 -- Another way
 SELECT name, department, price
 FROM products
 WHERE price > (
- 	SELECT MAX(price) FROM products WHERE department = 'Industrial' 
+ 	SELECT MAX(price) FROM products WHERE department = 'Industrial'
 );
 ```
 
@@ -166,4 +166,65 @@ WHERE price > SOME ( -- can also use `ANY`
     FROM products
     WHERE department = 'Industrial'
 );
+```
+
+## Correlated SubQueries
+
+<img src="./pics/correlated_subquery.png" alt="diagram of correlated subquery" />
+
+- Correlated SubQueries reference columns from the outer query and are executed for each row of the outer query, allowing for more complex and context-dependent data retrieval.
+- It is like a form of _double nested loop_.
+
+```sql
+-- Show the name, department and price of the
+-- most expensive product in each department
+SELECT name, department, price
+FROM products AS p1
+WHERE p1.price = (
+    SELECT MAX(price)
+    FROM products AS p2
+    WHERE p2.department = p1.department
+);
+```
+
+```sql
+-- Without using a join or a group by, print
+-- the number of orders for each product
+-- Use `orders` and `products` table
+-- Using Correlated SubQuery in `SELECT`
+SELECT name, (
+    SELECT COUNT(*)
+    FROM orders AS o1
+    WHERE o1.product_id = p1.id
+)
+FROM products AS p1;
+```
+
+## `SELECT` without a `FROM` that includes a subquery
+
+- Only works if subquery returns 1 single value
+- Retrieves data directly from the subquery result rather than a specific table.
+
+```sql
+SELECT (
+    SELECT MAX(price)
+    FROM products
+);
+
+SELECT (
+    SELECT MAX(price)
+    FROM products
+) / (
+    SELECT MIN(price)
+    FROM products
+);
+
+-- with alias
+SELECT (
+    SELECT MAX(price)
+    FROM products
+) AS max_price, (
+    SELECT MIN(price)
+    FROM products
+) AS min_price;
 ```
