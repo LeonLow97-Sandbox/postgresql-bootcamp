@@ -119,11 +119,51 @@ WHERE price > (
 ```sql
 -- Show the name of all products that are not in the same
 -- department as products with a price less than 100
-SELECT name
+SELECT name, department
 FROM products
 WHERE department NOT IN (
     SELECT department
     FROM products
     WHERE price < 100
+);
+```
+
+## `ALL` operator in `WHERE` clause
+
+- The `ALL` operator in the `WHERE` clause is used to compare a value with all values in a subquery and returns true if the comparison is true for **all** values in the subquery.
+- `> ALL`, `< ALL`, `>= ALL`, `<= ALL`, `= ALL`, `<> ALL`
+
+```sql
+-- Show the name, department, and price of products that are
+-- more expensive than all products in the 'Industrial' department
+SELECT name, department, price
+FROM products
+WHERE price > ALL (
+ 	SELECT price FROM products WHERE department = 'Industrial' 
+);
+
+-- Another way
+SELECT name, department, price
+FROM products
+WHERE price > (
+ 	SELECT MAX(price) FROM products WHERE department = 'Industrial' 
+);
+```
+
+## `SOME` operator in `WHERE` clause
+
+- The `SOME` operator in the `WHERE` clause is used to compare a value with the result of a subquery, and it returns true if the value matches **any** of the values returned by the subquery.
+- Can also use `ANY`, same as `SOME`.
+- `> SOME`, `< SOME`, `>= SOME`, `<= SOME`, `= SOME`, `<> SOME`
+
+```sql
+-- Show the name of products that are more expensive than at
+-- least one product in the 'Industrial' department
+SELECT name, department, price
+FROM products
+WHERE price > SOME ( -- can also use `ANY`
+    SELECT price
+    FROM products
+    WHERE department = 'Industrial'
 );
 ```
