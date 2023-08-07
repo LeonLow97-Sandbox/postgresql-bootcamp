@@ -40,11 +40,6 @@ CREATE TABLE products (
 	weight INTEGER
 );
 
--- After the table was created
--- 1. Update/Delete rows where price is NULL
--- 2. ALTER the column
-UPDATE products SET price = 9999 WHERE price IS NULL;
-
 ALTER TABLE products
 ALTER COLUMN price
 SET NOT NULL;
@@ -52,4 +47,22 @@ SET NOT NULL;
 -- Trying to INSERT NULL values
 INSERT INTO products (name, department, weight)
 VALUES ('Shoes', 'Clothes', 5); -- ERROR:  null value in column "price" of relation "products" violates not-null constraint
+```
+
+## Default Column Values
+
+- If price is not defined, we use a default value.
+
+```sql
+-- When creating the table
+CREATE TABLE products (
+    ...
+	price INTEGER DEFAULT 999
+	...
+);
+
+-- After table was created
+ALTER TABLE products
+ALTER COLUMN price
+SET DEFAULT 999;
 ```
