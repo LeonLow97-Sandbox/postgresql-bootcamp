@@ -20,14 +20,14 @@ SELECT user_id FROM comments
 GROUP BY user_id;
 ```
 
-<img src="./pics/group-by.png" />
+<img src="../pics/group-by.png" />
 
 ## Aggregate Functions
 
 | Aggregate Functions | Description                                                               |
 | :-----------------: | ------------------------------------------------------------------------- |
 |      `COUNT()`      | Returns the number of values in a group of values, EXCLUDES `NULL` values |
-|      `COUNT(*)`      | INCLUDES `NULL` values |
+|     `COUNT(*)`      | INCLUDES `NULL` values                                                    |
 |       `SUM()`       | Finds the **sum** of a group of numbers.                                  |
 |       `AVG()`       | Finds the **average** of a group of numbers.                              |
 |       `MIN()`       | Returns the **minimum** value from a group of numbers.                    |
@@ -45,7 +45,7 @@ SELECT MAX(id), contents FROM comments; -- this results in an aggregate function
 
 ## Combining `GROUP BY` and Aggregates
 
-<img src="./pics/group-by2.png" />
+<img src="../pics/group-by2.png" />
 
 ```sql
 -- Counts the number of comments the user has made
@@ -108,4 +108,3 @@ FROM phones
 GROUP BY manufacturer
 HAVING SUM(price*units_sold) > 2000000;
 ```
-

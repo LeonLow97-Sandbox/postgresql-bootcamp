@@ -9,7 +9,7 @@
 
 ## Database Design Process
 
-<img src="./pics/database-design-process.png" />
+<img src="../pics/database-design-process.png" />
 
 ## Dummy PostgreSQL Database
 

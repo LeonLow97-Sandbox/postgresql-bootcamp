@@ -1,6 +1,6 @@
 # Unions and Intersections with Sets
 
-<img src="./pics/union_cheatsheet.png" alt="union cheatsheet" />
+<img src="../pics/union_cheatsheet.png" alt="union cheatsheet" />
 
 ## Handling Sets with Union
 
@@ -56,8 +56,8 @@ INTERSECT
 
 ## `EXCEPT`
 
-<img src="./pics/except_diagram.png" alt="diagram showing EXCEPT" />
-<img src="./pics/except_change_order.png" alt="diagram showing EXCEPT with changing order of SELECT query" />
+<img src="../pics/except_diagram.png" alt="diagram showing EXCEPT" />
+<img src="../pics/except_change_order.png" alt="diagram showing EXCEPT with changing order of SELECT query" />
 
 ### Assignment
 

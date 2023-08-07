@@ -34,7 +34,7 @@ FROM products
 ORDER BY price, weight;
 ```
 
-<img src="./pics/order-by-example.png" alt="order by example" />
+<img src="../pics/order-by-example.png" alt="order by example" />
 
 ## `OFFSET` and `LIMIT`
 
@@ -51,6 +51,7 @@ LIMIT 2 OFFSET 1;
 ```
 
 ---
+
 #### Use Cases
 
 1. To find the top most records, or bottom least records. Used with `ORDER BY`.

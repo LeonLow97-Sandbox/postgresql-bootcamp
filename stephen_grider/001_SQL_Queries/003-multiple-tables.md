@@ -8,7 +8,7 @@
 - Users can like a photo
 - List of comments, each created by a user
 
-<img src="./pics/database-design-instagram.png" />
+<img src="../pics/database-design-instagram.png" />
 
 ## One-to-Many and Many-to-One Relationship
 

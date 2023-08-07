@@ -16,8 +16,8 @@ WHERE price > (
 );
 ```
 
-<img src="./pics/subquery.png" alt="diagram of subquery" />
-<img src="./pics/shape_of_subquery.png" alt="shape of subquery" />
+<img src="../pics/subquery.png" alt="diagram of subquery" />
+<img src="../pics/shape_of_subquery.png" alt="shape of subquery" />
 
 ## SubQueries in a `SELECT`
 
@@ -74,7 +74,7 @@ FROM (
 
 ## SubQueries in `JOIN` clause
 
-<img src="./pics/subquery_join.png" alt="subquery with JOIN clause" />
+<img src="../pics/subquery_join.png" alt="subquery with JOIN clause" />
 
 - Any SubQuery that returns data compatible with the `ON` clause.
 
@@ -170,7 +170,7 @@ WHERE price > SOME ( -- can also use `ANY`
 
 ## Correlated SubQueries
 
-<img src="./pics/correlated_subquery.png" alt="diagram of correlated subquery" />
+<img src="../pics/correlated_subquery.png" alt="diagram of correlated subquery" />
 
 - Correlated SubQueries reference columns from the outer query and are executed for each row of the outer query, allowing for more complex and context-dependent data retrieval.
 - It is like a form of _double nested loop_.
