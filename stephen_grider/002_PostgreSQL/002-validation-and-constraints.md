@@ -153,3 +153,13 @@ CREATE TABLE orders (
 INSERT INTO orders (name, created_at, est_delivery)
 VALUES('Shirt', '2000-NOV-10 01:00AM', '2000-NOV-08 01:00AM');
 ```
+
+## Where should we apply these validation checks?
+
+It is generally considered better to have validation checks primarily in the web server, as this allows for more controlled and customizable validation logic, separation of concerns, and better handling of user feedback, while still utilizing SQL constraints for an additional layer of data integrity and security in the database.
+
+| Web Server                                         | Database                                                              |
+| -------------------------------------------------- | --------------------------------------------------------------------- |
+| Easier to express more complex validation.         | Validation still applied even if you connect with a different client. |
+| Far easier to apply new validation rules.          | Guaranteed that validation is always applied.                         |
+| Many libraries to handle validation automatically. | Can only apply new validation rules if all existing rows satisfy it.  |
