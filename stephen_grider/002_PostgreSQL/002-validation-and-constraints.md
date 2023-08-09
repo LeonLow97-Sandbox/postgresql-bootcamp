@@ -113,3 +113,43 @@ CREATE TABLE products (
 ALTER TABLE products
 ADD UNIQUE(name, department);
 ```
+
+## Adding a Validation `CHECK`
+
+- `CHECK` can only work on the row we are adding/updating.
+- Can perform basic operators (>, <, >=, <=, =)
+
+```sql
+-- price of product must be greater than 0
+-- When creating the table
+CREATE TABLE products (
+	id SERIAL PRIMARY KEY,
+	name VARCHAR(40),
+	department VARCHAR(40),
+	price INTEGER CHECK (price) > 0, -- CHECK
+	weight INTEGER,
+	UNIQUE(name, department)
+);
+
+-- After the table was created
+ALTER TABLE products
+ADD CHECK (price > 0);
+```
+
+## `CHECK` over multiple columns
+
+```sql
+-- Probably should make sure than an order is delivered after it is created
+CREATE TABLE orders (
+	id SERIAL PRIMARY KEY,
+	name VARCHAR(40) NOT NULL,
+	created_at TIMESTAMP NOT NULL,
+	est_delivery TIMESTAMP NOT NULL,
+	CHECK(created_at < est_delivery)
+);
+
+-- ERROR:  new row for relation "orders" violates check constraint "orders_check"
+-- DETAIL:  Failing row contains (3, Shirt, 2000-11-10 01:00:00, 2000-11-08 01:00:00).
+INSERT INTO orders (name, created_at, est_delivery)
+VALUES('Shirt', '2000-NOV-10 01:00AM', '2000-NOV-08 01:00AM');
+```
