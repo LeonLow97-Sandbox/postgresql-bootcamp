@@ -66,3 +66,50 @@ ALTER TABLE products
 ALTER COLUMN price
 SET DEFAULT 999;
 ```
+
+## `UNIQUE` constraint
+
+- A `UNIQUE` constraint ensures that the values in a specified column or group of columns are unique across all rows in a table.
+
+```sql
+-- Cannot have 2 product with the same name
+-- When creating the table
+CREATE TABLE products (
+	id SERIAL PRIMARY KEY,
+	name VARCHAR(40) NOT NULL UNIQUE,
+	department VARCHAR(40),
+	price INTEGER,
+	weight INTEGER
+);
+
+-- After the table was created
+ALTER TABLE products
+ADD UNIQUE (name);
+```
+
+## `DROP CONSTRAINT`
+
+<img src="../pics/pgadmin_constraints.png" alt="constraints in pgadmin" />
+
+```sql
+ALTER TABLE products
+DROP CONSTRAINT products_name_key;
+```
+
+## Multiple-Column Uniqueness
+
+```sql
+-- When creating the table
+CREATE TABLE products (
+	id SERIAL PRIMARY KEY,
+	name VARCHAR(40),
+	department VARCHAR(40),
+	price INTEGER,
+	weight INTEGER,
+	UNIQUE(name, department)
+);
+
+-- After the table was created
+ALTER TABLE products
+ADD UNIQUE(name, department);
+```
