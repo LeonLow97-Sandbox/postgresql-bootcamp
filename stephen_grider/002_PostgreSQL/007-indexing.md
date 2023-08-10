@@ -32,3 +32,28 @@
         - Leaf Node: Nancy (Block 0 Index 1), Riann (Block 1 Index 2)
     Example: If looking for username = 'Riann', then we will visit the right subtree.
 5. Extract the block and index number of 'Riann' in the leaf node and use that information to look at 'Riann' record in the Heap File.
+
+## Creating an Index
+
+```sql
+-- Schemas --> Tables --> users --> Indexes
+CREATE INDEX ON users(username);
+
+-- Manually name the index
+CREATE INDEX users_username_idx ON users(username);
+
+-- Deleting an Index
+DROP INDEX users_username_idx;
+```
+
+## Benchmarking Queries (`EXPLAIN ANALYZE`)
+
+```sql
+-- With Index: 0.04 ms
+-- Without Index: 1.20 ms
+-- 1.20 ms / 0.04 ms = 30 times slower without indexes!
+EXPLAIN ANALYZE 
+SELECT * 
+FROM users 
+WHERE username = 'Emil30';
+```
