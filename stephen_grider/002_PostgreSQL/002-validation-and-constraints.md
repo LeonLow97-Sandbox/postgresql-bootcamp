@@ -163,3 +163,9 @@ It is generally considered better to have validation checks primarily in the web
 | Easier to express more complex validation.         | Validation still applied even if you connect with a different client. |
 | Far easier to apply new validation rules.          | Guaranteed that validation is always applied.                         |
 | Many libraries to handle validation automatically. | Can only apply new validation rules if all existing rows satisfy it.  |
+
+| Description                                                | Validation in PostgreSQL? |
+| ---------------------------------------------------------- | :-----------------------: |
+| Rules around validating the value might change frequently. |       No Validation       |
+| Rules around validating the value are complex              |       No Validation       |
+| Ensure that we have the right type or domain of value      |      Add Validation       |
