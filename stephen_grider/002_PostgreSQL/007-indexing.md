@@ -76,3 +76,29 @@ SELECT pg_size_pretty(pg_relation_size('users_username_idx'));
     - Index might not actually get used by PostgreSQL.
     - PostgreSQL's query planner decides whether to use an index or not based on factors like query complexity and selectivity.
     - There might be cases where the query planner determines that using an index is not the most efficient option, leading to the index not being used for certain queries.
+
+## Index Types
+
+- Commonly used: B-Tree
+
+|Index Types|Description|
+|:-:|---|
+|B-Tree|General purpose index. 99% of the time you want this.|
+|Hash|Speeds up simple equality checks.|
+|GiST|Geometry, full-text search.|
+|SP-GiST|Clustered data, such as dates - many rows might have the same year.|
+|GIN|For columns that contain arrays or JSON data.|
+|BRIN|Specialized for really large datasets.|
+
+## Automatically Generated Indexes
+
+- Postgres automatically creates an index for the **primary key** column of every table.
+- Postgres automatically creates an index for any `UNIQUE` constraint.
+- These don't get listed under 'indexes' in PGAdmin.
+
+```sql
+-- To check what indexes are present
+SELECT relname, relkind
+FROM pg_class
+WHERE relkind = 'i'; -- index
+```
