@@ -20,8 +20,8 @@
 - "Hash Join (cost=8.31..1756.11 rows=11 width=81)"
   - `Hash Join`: How this node is generating data.
   - `cost=...`: Amount of processing power required for this step.
-  - `rows=...`: A *guess* at how many rows this step will produce.
-  - `width=...`: A *guess* at the average number of bytes of each row.
+  - `rows=...`: A _guess_ at how many rows this step will produce.
+  - `width=...`: A _guess_ at the average number of bytes of each row.
 
 ```sql
 -- How PostgreSQL estimated rows and width
@@ -29,3 +29,40 @@ SELECT *
 FROM pg_stats
 WHERE tablename = 'users';
 ```
+
+# Advanced Query Tuning
+
+## Developing an Intuitive Understanding of Cost
+
+- `cost`: Amount of time (seconds, milliseconds) to execute some part of our query plan.
+
+---
+#### Retrieve users with index `users_username_idx`:
+1. Find the ID's of users who have username of 'Alyson14'
+    - Get root node
+    - Jump to some random child page
+    - Process the values in that node
+2. Open users heapfile
+3. Jump to each block that has the users we are looking for and process the appropriate users from each block.
+
+- Note: Steps 1 and 3 is around fetching 1 random page each (total 2 pages).
+
+#### Fetch all users and search through them
+1. Open users heapfile
+2. Load all users from the first block
+3. Process each user, see if it contains the correct username.
+4. Repeat the process for the next block.
+
+- Note: Steps 3 and 4 are done once for every page.
+---
+### Example Analysis
+- Loading data from random spots off a hard drive usually takes **more time** than loading data sequentially (one piece after another).
+- Let's *assume* that loading a *random* page takes **4 times longer** than loading up pages sequentially.
+
+```
+For `users_username_idx` index, (2 pages loaded in random order) * 4 = 8
+For fetching sequentially, (110 pages loaded sequentially) * 1 = 110
+
+Thus, fetching sequentially seems to be the slower operation.
+```
+---
