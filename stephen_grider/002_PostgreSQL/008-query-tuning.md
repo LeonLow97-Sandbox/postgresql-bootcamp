@@ -37,27 +37,33 @@ WHERE tablename = 'users';
 - `cost`: Amount of time (seconds, milliseconds) to execute some part of our query plan.
 
 ---
+
 #### Retrieve users with index `users_username_idx`:
+
 1. Find the ID's of users who have username of 'Alyson14'
-    - Get root node
-    - Jump to some random child page
-    - Process the values in that node
+   - Get root node
+   - Jump to some random child page
+   - Process the values in that node
 2. Open users heapfile
 3. Jump to each block that has the users we are looking for and process the appropriate users from each block.
 
 - Note: Steps 1 and 3 is around fetching 1 random page each (total 2 pages).
 
 #### Fetch all users and search through them
+
 1. Open users heapfile
 2. Load all users from the first block
 3. Process each user, see if it contains the correct username.
 4. Repeat the process for the next block.
 
 - Note: Steps 3 and 4 are done once for every page.
+
 ---
+
 ### Example Analysis
+
 - Loading data from random spots off a hard drive usually takes **more time** than loading data sequentially (one piece after another).
-- Let's *assume* that loading a *random* page takes **4 times longer** than loading up pages sequentially.
+- Let's _assume_ that loading a _random_ page takes **4 times longer** than loading up pages sequentially.
 
 ```
 For `users_username_idx` index, (2 pages loaded in random order) * 4 = 8
@@ -65,4 +71,29 @@ For fetching sequentially, (110 pages loaded sequentially) * 1 = 110
 
 Thus, fetching sequentially seems to be the slower operation.
 ```
+
 ---
+
+## Calculating Cost By Hand
+
+--
+
+#### Example: Fetch all comments
+
+1. Open the comments heap file
+2. Load all comments from the first block
+3. Process each comment in some way
+4. Repeat the process for the next block
+
+```
+-> Seq Scan on comments (cost=0.00..1589.10 rows=60410 width=72)
+
+- In comments table, there are 60410 rows and 985 pages.
+- Processing a single row is really cheap compared to loading an entire page
+
+- Processing 1 row costs 1% of processing 1 page
+(# pages) * 1.0 + (# rows) * 0.01
+(985) * 1.0 + (60410) * 0.01 = 1589.10 (we guessed the cost of loading a row and page sequentially)
+```
+
+--
