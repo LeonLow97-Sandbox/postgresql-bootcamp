@@ -13,24 +13,23 @@
 <img src="../pics/indexing.png" />
 
 - Index is a data structure that efficiently tells us what block/index a record is stored at.
-- Provides a way to quickly look up rows based on the values in *specific columns*.
+- Provides a way to quickly look up rows based on the values in _specific columns_.
 
 ## How an Index Works
 
 1. Decide which column do we want to have very fast lookups on, i.e., `username`.
 2. Extract only the property we want to do fast lookups by and the block & index for each.
-    - Nancy: Block 0 Index 1
-    - Alf: Block 0 Index 2
-    - Jia: Block 1 Index 1
-    - Riann: Block 1 Index 2
+   - Nancy: Block 0 Index 1
+   - Alf: Block 0 Index 2
+   - Jia: Block 1 Index 1
+   - Riann: Block 1 Index 2
 3. Sort in some meaningful way - Alphabetical for text, value for numbers, etc.
-    - Alf, Jia, Nancy, Riann
+   - Alf, Jia, Nancy, Riann
 4. Organize into a **B-tree (balanced tree) data structure**. Evenly distribute values in the leaf node, in order left to right.
-    - [Left tree] Root Node: Go this way if 'Alf' <= username < 'Nancy'
-        - Leaf Node: Alf (Block 0 Index 2), Jia (Block 1 Index 1)
-    - [Right tree] Root Node: Go this way if 'Nancy' <= username
-        - Leaf Node: Nancy (Block 0 Index 1), Riann (Block 1 Index 2)
-    Example: If looking for username = 'Riann', then we will visit the right subtree.
+   - [Left tree] Root Node: Go this way if 'Alf' <= username < 'Nancy'
+     - Leaf Node: Alf (Block 0 Index 2), Jia (Block 1 Index 1)
+   - [Right tree] Root Node: Go this way if 'Nancy' <= username - Leaf Node: Nancy (Block 0 Index 1), Riann (Block 1 Index 2)
+     Example: If looking for username = 'Riann', then we will visit the right subtree.
 5. Extract the block and index number of 'Riann' in the leaf node and use that information to look at 'Riann' record in the Heap File.
 
 ## Creating an Index
@@ -52,8 +51,28 @@ DROP INDEX users_username_idx;
 -- With Index: 0.04 ms
 -- Without Index: 1.20 ms
 -- 1.20 ms / 0.04 ms = 30 times slower without indexes!
-EXPLAIN ANALYZE 
-SELECT * 
-FROM users 
+EXPLAIN ANALYZE
+SELECT *
+FROM users
 WHERE username = 'Emil30';
 ```
+
+## Downside of Indexes
+
+1. Storage Overhead
+    - Takes some storage space to store the block and index data. Stores data from at least 1 column of the real table.
+    - [Storage Costs in Cloud Environments] For example, if you use AWS Cloud and your database table is 80 GB, your index will be around 18 GB, this will incur a high cost.
+
+```sql
+-- `users` table: 872 kB
+-- `users_username_idx` index: 184 kB
+SELECT pg_size_pretty(pg_relation_size('users'));
+SELECT pg_size_pretty(pg_relation_size('users_username_idx'));
+```
+
+2. Insert/Update/Delete Performance Impact
+    - Slows down insert/update/delete. When you insert records into the table, the index also has to be updated!
+3. Unused Indexes:
+    - Index might not actually get used by PostgreSQL.
+    - PostgreSQL's query planner decides whether to use an index or not based on factors like query complexity and selectivity.
+    - There might be cases where the query planner determines that using an index is not the most efficient option, leading to the index not being used for certain queries.
