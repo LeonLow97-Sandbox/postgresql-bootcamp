@@ -97,3 +97,30 @@ Thus, fetching sequentially seems to be the slower operation.
 ```
 
 --
+
+## More on Costs
+
+- [Query Planning Costs](https://www.postgresql.org/docs/current/runtime-config-query.html)
+- `seq_page_cost` is the baseline value for query cost.
+
+```
+// From Query Planning Costs PostgreSQL Documentation
+seq_page_cost = 1.0 
+random_page_cost = 4.0
+cpu_tuple_cost = 0.01
+cpu_index_tuple_cost = 0.005
+cpu_operator_cost = 0.0025
+
+Cost =
+        (# pages read sequentially) * seq_page_cost
+        + (# pages read at random) * random_page_cost
+        + (# rows scanned) * cpu_tuple_cost
+        + (# index entries scanned) * cpu_index_tuple_cost
+        + (# times function/operator evaluated) * cpu_operator_cost
+
+// For sequential operations in PostgreSQL
+Cost =
+        (# pages read sequentially) * seq_page_cost
+        + (# rows scanned) * cpu_tuple_cost
+```
+
