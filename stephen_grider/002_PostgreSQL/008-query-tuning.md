@@ -105,7 +105,7 @@ Thus, fetching sequentially seems to be the slower operation.
 
 ```
 // From Query Planning Costs PostgreSQL Documentation
-seq_page_cost = 1.0 
+seq_page_cost = 1.0
 random_page_cost = 4.0
 cpu_tuple_cost = 0.01
 cpu_index_tuple_cost = 0.005
@@ -124,3 +124,44 @@ Cost =
         + (# rows scanned) * cpu_tuple_cost
 ```
 
+## Startup vs Total Costs
+
+- E.g., Hash Join (`cost=8.31..1756.11` ...)
+  - `1st number`: Cost for this step to produce the first row.
+  - `2nd number`: Cost for this step to produce all rows.
+- If both numbers are the same (e.g., Hash (cost=8.30..8.30), this means that all rows emitted from this step must be completed before these rows can be passed on to the next step.)
+
+## PostgreSQL running Sequential Scan instead of Index
+
+- If PostgreSQL is running sequential scan instead of indexing, don't force it to run index because PG has probably done the math and realize that sequential scan is faster.
+
+1. Creating Index for `created_at` column in `likes` table.
+
+```sql
+CREATE INDEX likes_created_at_idx ON likes (created_at);
+```
+
+2. Checking count for `created_at < '2013-01-01'` and `created_at > '2013-01-01'`
+
+```sql
+SELECT COUNT(*) FROM likes
+WHERE created_at < '2013-01-01'; -- Output: 63000
+
+SELECT COUNT(*) FROM likes
+WHERE created_at > '2013-01-01'; -- Output: 689009
+```
+
+3. Using `EXPLAIN` on the SQL Queries in step 2
+
+```sql
+EXPLAIN SELECT COUNT(*) FROM likes
+WHERE created_at < '2013-01-01'; -- Output: PostgreSQL used index
+
+EXPLAIN SELECT COUNT(*) FROM likes
+WHERE created_at > '2013-01-01'; -- Output; PostgreSQL used Sequential Scan
+```
+
+- In the first SQL Query where `created_at < '2013-01-01'`, the number of queries is much less than the second SQL Query where `created_at > '2013-01-01'`.
+- If PostgreSQL were to use indexing in the second query, the operation has to visit all the leaf nodes and get the block/index of the records and then search the heap file for these records.
+- Searching through a large number of leaf nodes is costly as opposed to just using sequential scan to retrieve a large number of records.
+- Thus, PostgreSQL did internal calculation and realized that the sequential scan was more beneficial for the second SQL Query.
