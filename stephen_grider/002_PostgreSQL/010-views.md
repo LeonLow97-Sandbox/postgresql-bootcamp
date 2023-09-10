@@ -82,6 +82,9 @@ DROP VIEW recent_posts;
     - *E.g., You are writing a query that takes twenty seconds to execute.  Even though the query gets executed many times per day, the results only change once per month.*
 - Both views and materialized views wrap up a query. When you refer to a view, the query is executed. When you refer to a materialized view, you get back the results from when the materialized view was created or when it was last refreshed.
 
+<img src="../pics/materialized_view1.png" />
+<img src="../pics/materialized_view2.png" />
+
 ```sql
 /**
     For each week, show the number of likes that posts and comments received.
