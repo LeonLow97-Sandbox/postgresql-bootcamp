@@ -10,3 +10,4 @@
   ```
 4. `npm run migrate create table comments`
 5. `npm run migrate create rename contents to body`
+6. `npm install express pg`
