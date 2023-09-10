@@ -36,7 +36,7 @@ WHERE tags.created_at < '2010-01-07';
 ## Recursive CTEs
 
 - Very different from simple CTEs.
-- Useful anytime you have a tree or graph-type data structure.
+- Useful anytime you have a `tree` or `graph-type` data structure.
 - Must use a `UNION` keyword - simple CTEs don't have a UNION.
 - Recursive CTEs are very advanced, don't expect you to be able to write your own recursive CTEs, just understand that they exist.
 
@@ -48,8 +48,8 @@ WHERE tags.created_at < '2010-01-07';
     3. Run the recursive statement replacing the table name 'countdown'
         with a reference to the working table.
     4. If recursive statement returns some rows, append them to the
-        results table and run recursion again. Then throw everything away
-        in working table and replace whatever we got from the recursive query.
+        results table and run recursion again. Then throw everything in
+        working table away and replace whatever we got from the recursive query.
     5. If recursive statement returns no rows, stop recursion.
  */
 
@@ -65,4 +65,26 @@ FROM countdown;
 3
 2
 1
+```
+
+## Real example of Recursive CTEs
+
+- Instagram suggests who you may want to follow.
+
+```sql
+WITH RECURSIVE suggestions (leader_id, follower_id, depth) AS (
+		SELECT leader_id, follower_id, 1 AS depth
+		FROM followers
+		WHERE follower_id = 1
+	UNION
+		SELECT followers.leader_id, followers. follower_id, depth + 1
+		FROM followers
+		JOIN suggestions ON suggestions.leader_id = followers.follower_id
+		WHERE depth < 3
+)
+SELECT DISTINCT users.id, users.username
+FROM suggestions
+JOIN users ON users.id = suggestions.leader_id
+WHERE depth > 1 -- depth = 1 are users that we are already following
+LIMIT 30;
 ```
