@@ -12,7 +12,7 @@
 ## `EXPLAIN` and `EXPLAIN ANALYZE`
 
 - `EXPLAIN`: build a query plan and display info about it.
-- `EXPLAIN ANALYZE`: build a query plan, run it and info about it.
+- `EXPLAIN ANALYZE`: build a query plan, run it and display info about it.
 - These are for benchmarking + evaluating queries, not for use in real data fetching. Just for performance evaluation.
 
 <img src="../pics/explain_analyze.png" />

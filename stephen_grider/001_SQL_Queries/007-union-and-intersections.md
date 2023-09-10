@@ -1,5 +1,7 @@
 # Unions and Intersections with Sets
 
+- In `UNION`, the number of columns and order of columns of all queries must be same.
+
 <img src="../pics/union_cheatsheet.png" alt="union cheatsheet" />
 
 ## Handling Sets with Union
@@ -38,7 +40,7 @@ UNION
 SELECT price FROM products;
 ```
 
-## `INTERSECT`
+## `INTERSECT`: Find the rows common in the result of 2 queries. Removes duplicates.
 
 ```sql
 (
@@ -54,7 +56,7 @@ INTERSECT
 );
 ```
 
-## `EXCEPT`
+## `EXCEPT`: Find the rows that are present in first query, but not second query. Removes duplicates.
 
 <img src="../pics/except_diagram.png" alt="diagram showing EXCEPT" />
 <img src="../pics/except_change_order.png" alt="diagram showing EXCEPT with changing order of SELECT query" />

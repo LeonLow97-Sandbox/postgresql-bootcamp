@@ -26,9 +26,9 @@
 3. Sort in some meaningful way - Alphabetical for text, value for numbers, etc.
    - Alf, Jia, Nancy, Riann
 4. Organize into a **B-tree (balanced tree) data structure**. Evenly distribute values in the leaf node, in order left to right.
-   - [Left tree] Root Node: Go this way if 'Alf' <= username < 'Nancy'
+   - [Left tree] Root Node: Go this way if 'Alf' <= `username` < 'Nancy'
      - Leaf Node: Alf (Block 0 Index 2), Jia (Block 1 Index 1)
-   - [Right tree] Root Node: Go this way if 'Nancy' <= username - Leaf Node: Nancy (Block 0 Index 1), Riann (Block 1 Index 2)
+   - [Right tree] Root Node: Go this way if 'Nancy' <= `username` - Leaf Node: Nancy (Block 0 Index 1), Riann (Block 1 Index 2)
      Example: If looking for username = 'Riann', then we will visit the right subtree.
 5. Extract the block and index number of 'Riann' in the leaf node and use that information to look at 'Riann' record in the Heap File.
 

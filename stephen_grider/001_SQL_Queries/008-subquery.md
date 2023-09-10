@@ -6,7 +6,7 @@
 
 ```sql
 -- List the name and price of all products that are
--- more expensive than all products in the Toys department
+-- more expensive than the most expensive toy product in the Toys department
 SELECT name, price
 FROM products
 WHERE price > (

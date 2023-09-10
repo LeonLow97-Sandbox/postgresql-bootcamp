@@ -79,6 +79,8 @@ GROUP BY authors.name;
 ## Filtering Groups with `HAVING`
 
 - `HAVING`: Filters the set of groups.
+- The `HAVING` clause is like the `WHERE` clause of `GROUP BY`.
+- The only difference is that the `WHERE` clause cannot be used with aggregate functions, whereas the `HAVING` clause can use aggregate functions.
 
 ```sql
 -- Find the number of comments for each photo

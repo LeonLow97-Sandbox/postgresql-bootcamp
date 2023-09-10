@@ -36,6 +36,7 @@
 - Cannot have `post_id` and `comment_id` both to be NULL at the same time OR both to have an integer at the same time. Have to add in a `CHECK` constraint.
 - [Downside] Have to write down a complex `CHECK` constraint.
 - We will be using this approach because we assume a user can only 'like' a post or comment, no such thing as different reaction types ('love','clap','shock').
+- `COALESCE(post_id::BOOLEAN::INTEGER, 0)` means that if post_id cannot be type casted to a BOOLEAN, then it is null and will be converted to 0.
 
 ---
 
@@ -52,6 +53,7 @@
 
 - In this example, we are going with solution 2.
 - Go for solution 1 if you are not planning to add any special association to tags in photos and captions.
+- The numbers (x, y) are the coordinates of the tag on the photo.
 
 <img src="../pics/tags_solution_1.png" />
 <img src="../pics/tags_solution_2.png" />

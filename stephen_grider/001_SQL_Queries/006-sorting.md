@@ -38,6 +38,7 @@ ORDER BY price, weight;
 
 ## `OFFSET` and `LIMIT`
 
+- Useful for Pagination.
 - `OFFSET 3`: Skips the first 3 rows of the result set.
 - `LIMIT 2`: Only give the first 2 rows of the result set.
 
