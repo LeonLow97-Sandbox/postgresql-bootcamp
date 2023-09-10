@@ -39,6 +39,7 @@ WHERE tags.created_at < '2010-01-07';
 - Useful anytime you have a `tree` or `graph-type` data structure.
 - Must use a `UNION` keyword - simple CTEs don't have a UNION.
 - Recursive CTEs are very advanced, don't expect you to be able to write your own recursive CTEs, just understand that they exist.
+- Commonly used when you need to work with hierarchical or recursive data structures such as organizational charts, file systems, etc.
 
 ```sql
 /**
