@@ -24,12 +24,12 @@ ORDER BY COUNT(*) DESC;
 
 -- Create a view
 CREATE VIEW tags AS (
-	SELECT id, created_at, user_id, post_id, 'photo_tag' AS type 
+	SELECT id, created_at, user_id, post_id, 'photo_tag' AS type
 	FROM photo_tags
 	UNION ALL
-	SELECT id, created_at, user_id, post_id, 'caption_tag' AS type 
+	SELECT id, created_at, user_id, post_id, 'caption_tag' AS type
 	FROM caption_tags
-); 
+);
 
 SELECT username, COUNT(*)
 FROM users
@@ -73,3 +73,54 @@ DROP VIEW recent_posts;
 ## List of views in PGAdmin4
 
 - Database --> Schemas --> public --> Views
+
+# Materialized Views
+
+- **Materialized Views**: Query that gets executed only at very specific times, but the _results are saved_ and can be referenced _without rerunning the query_.
+- **Views**: Query that gets executed every time you refer to it.
+- Use materialized views only to rows / records that are not going to change very often.
+    - *E.g., You are writing a query that takes twenty seconds to execute.  Even though the query gets executed many times per day, the results only change once per month.*
+- Both views and materialized views wrap up a query. When you refer to a view, the query is executed. When you refer to a materialized view, you get back the results from when the materialized view was created or when it was last refreshed.
+
+```sql
+/**
+    For each week, show the number of likes that posts and comments received.
+    Use the post and comment created_at date, not when the like was received.
+*/
+
+-- Perform a 3-way LEFT JOIN (pretty slow query)
+SELECT 
+	date_trunc('week', COALESCE(posts.created_at, comments.created_at)) AS week,
+	COUNT(posts.id) AS num_likes_for_posts,
+	COUNT(comments.id) AS num_likes_for_comments
+FROM likes
+LEFT JOIN posts ON posts.id = likes.post_id
+LEFT JOIN comments ON comments.id = likes.comment_id
+GROUP BY week
+ORDER BY week;
+
+-- Materialized View (very fast)
+CREATE MATERIALIZED VIEW weekly_likes AS (
+	SELECT 
+		date_trunc('week', COALESCE(posts.created_at, comments.created_at)) AS week,
+		COUNT(posts.id) AS num_likes_for_posts,
+		COUNT(comments.id) AS num_likes_for_comments
+	FROM likes
+	LEFT JOIN posts ON posts.id = likes.post_id
+	LEFT JOIN comments ON comments.id = likes.comment_id
+	GROUP BY week
+	ORDER BY week
+) WITH DATA; -- `DATA` to allow postgres to hold onto the results
+SELECT * FROM weekly_likes;
+```
+
+## Updating Materialized View
+
+```sql
+DELETE FROM posts
+WHERE created_at < '2010-02-01';
+
+REFRESH MATERIALIZED VIEW weekly_likes;
+
+SELECT * FROM weekly_likes;
+```
