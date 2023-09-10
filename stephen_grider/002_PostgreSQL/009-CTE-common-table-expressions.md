@@ -33,3 +33,36 @@ JOIN tags ON tags.user_id = users.id
 WHERE tags.created_at < '2010-01-07';
 ```
 
+## Recursive CTEs
+
+- Very different from simple CTEs.
+- Useful anytime you have a tree or graph-type data structure.
+- Must use a `UNION` keyword - simple CTEs don't have a UNION.
+- Recursive CTEs are very advanced, don't expect you to be able to write your own recursive CTEs, just understand that they exist.
+
+```sql
+/**
+    1. Define the results and working tables
+    2. Run the initial non-recursive statement, put the results
+        into the results table and working table.
+    3. Run the recursive statement replacing the table name 'countdown'
+        with a reference to the working table.
+    4. If recursive statement returns some rows, append them to the
+        results table and run recursion again. Then throw everything away
+        in working table and replace whatever we got from the recursive query.
+    5. If recursive statement returns no rows, stop recursion.
+ */
+
+WITH RECURSIVE countdown(val) AS (
+	SELECT 3 AS val -- Initial, Non-recursive query
+	UNION
+	SELECT val - 1 FROM countdown WHERE val > 1 -- Recursive query
+)
+SELECT * 
+FROM countdown;
+
+-- Output: 
+3
+2
+1
+```
