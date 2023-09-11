@@ -1,0 +1,17 @@
+module.exports = (rows) => {
+  // changing keys to camelCase
+  return rows.map((row) => {
+    const replaced = {};
+
+    // convert key like 'created_at' to 'createdAt' (for JavaScript semantics)
+    for (let key in row) {
+      const camelCase = key.replace(/([-_][a-z])/gi, ($1) => {
+        return $1.toUpperCase().replace('_', '');
+      });
+
+      replaced[camelCase] = row[key];
+    }
+
+    return replaced;
+  });
+};
