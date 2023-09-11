@@ -16,3 +16,8 @@
 
 1. `sudo lsof -i :5432`
 2. `sudo kill <PID>`
+
+## Migration Up and Down
+
+- Make sure to create database `socialnetwork`
+- `DATABASE_URL=postgres://leonlow@localhost:5432/socialnetwork npm run migrate up`

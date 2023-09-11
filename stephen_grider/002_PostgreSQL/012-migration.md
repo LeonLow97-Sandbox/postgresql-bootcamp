@@ -26,3 +26,9 @@
 <img src="../pics/data-migration1.png" width="75%" />
 <img src="../pics/data-migration2.png" width="75%" />
 <img src="../pics/data-migration3.png" width="75%" />
+
+## Different Approaches with Migration from API to PostgreSQL
+
+<img src="../pics/data-migration5.png" width="30%" />
+<img src="../pics/data-migration6.png" width="75%" />
+<img src="../pics/data-migration7.png" width="75%" />
