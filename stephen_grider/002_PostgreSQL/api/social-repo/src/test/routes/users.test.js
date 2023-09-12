@@ -2,14 +2,20 @@ const request = require('supertest');
 const buildApp = require('../../app');
 const UserRepo = require('../../repos/user-repo');
 const pool = require('../../pool');
-const Context = require('../context')
+const Context = require('../context');
 
+let context;
 beforeAll(async () => {
-  const context = await Context.build()
+  context = await Context.build();
+});
+
+beforeEach(async () => {
+  await context.reset();
 });
 
 afterAll(() => {
-  return pool.close();
+  // cleanup function to remove role and schema created in test
+  return context.close();
 });
 
 it('create a user', async () => {
