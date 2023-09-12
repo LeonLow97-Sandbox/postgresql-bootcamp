@@ -46,7 +46,7 @@ our application extracts the URL params as `1;DROP TABLE users;`
 - Rely on Postgres to sanitize values for us.
 
 ---
-#### Option 1: Relying on Postgres to sanitize values for us
+#### Relying on Postgres to sanitize values for us
 
 - Downside: can only use prepared statement when we are trying to substitute values to a query.
 
@@ -65,4 +65,42 @@ our application extracts the URL params as `1;DROP TABLE users;`
     EXECUTE random_name('127');
     ```
 ---
-#### Option 2
+
+## Testing Repository Layer
+
+1. Created a new database for testing in postgres, `socialnetwork-test`
+2. Running SQL migration files in test database.
+    - `DATABASE_URL=postgres://leonlow@localhost:5432/socialnetwork-test npm run migrate up`
+3. `npm run test`
+
+## Parallel Testing
+
+- `package.json`
+    - `"test": "jest --no-cache"` - forcing Jest to run all tests in parallel.
+    - `"test": "jest"` - running tests synchronously.
+
+---
+#### Solution to run test files in **parallel**
+
+- **Each test file get its own schema**.
+    - `CREATE SCHEMA test;`
+    ```sql
+    CREATE TABLE test.users (
+        id SERIAL PRIMARY KEY,
+        username VARCHAR
+    );
+    INSERT INTO test.users (username) 
+    VALUES ('Alex'), ('Timothy');
+    ```
+- Looking at `search_path`
+    ```sql
+    SHOW search_path; -- output `$user, public`
+    -- $user is the username that is used to connect to postgres database.
+    -- If there is a schema called 'leonlow' ($user), it will run queries based on that schema
+    -- first before running queries in the `public` schema.
+
+    SET search_path TO '$user', public; -- use this in test file to customise the priority schema to run
+    ```
+- Issue is that all test files are running queries in the `public` schema. We need to let the test file run query on other schemas to create an isolation.
+    - Solution: Set schema name to be same as `$user` but generated randomly as a string.
+---
