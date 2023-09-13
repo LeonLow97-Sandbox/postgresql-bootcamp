@@ -80,8 +80,19 @@ our application extracts the URL params as `1;DROP TABLE users;`
     - `"test": "jest"` - running tests synchronously.
 
 ---
+
 #### Solution to run test files in **parallel**
 
+<img src="../pics/parallel1.png" width="50%" />
+<img src="../pics/parallel2.png" width="50%" />
+<img src="../pics/parallel3.png" width="50%" />
+<img src="../pics/parallel4.png" width="50%" />
+<img src="../pics/parallel5.png" width="50%" />
+
+- **Schema**: 
+    - they are like folders to organize things in a database.
+    - every database gets a default schema called `public`.
+    - each schema can have its own separate copy of a table.
 - **Each test file get its own schema**.
     - `CREATE SCHEMA test;`
     ```sql
